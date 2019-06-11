@@ -10,9 +10,11 @@ from skimage.measure import compare_psnr as psnr
 from skimage.util.dtype import dtype_range
 from scipy.ndimage import uniform_filter, gaussian_filter
 from skimage.util.arraycrop import crop
-
 import numpy as np
 
+from collections import deque
+
+maxlen = 10
 
 def _as_floats(im1, im2):
     """Promote im1, im2 to nearest appropriate floating point precision."""
@@ -211,16 +213,33 @@ def calculateALL(img1, img2):
     MSE = compare_mse(img1, img2)
     # SSIM = ssim(img1, img2, multichannel=True)
     SSIM = compare_ssim(img1, img2, multichannel=True)
+    print('MSE:', MSE)
+    print('SSIM:', SSIM)
     return MSE, SSIM
 
 
-def calculate():
-    pass
+def status(MSE, SSIM):
+    s1 = ""
+    s2 = ""
+    if MSE > 7:
+        s1 = "警告"
+        if MSE > 20:
+            if SSIM < 0.93:
+                s2 = "错误"
+                return s2
+            else:
+                return s1
+        else:
+            return s1
+    else:
+        return "正常"
 
 
 class Queue:
     def __init__(self):
-        self.items = []
+        self.items = deque(maxlen=maxlen)
+        for i in range(maxlen):
+            self.items.append(False)
 
     def enqueue(self, item):
         self.items.append(item)

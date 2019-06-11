@@ -2,14 +2,11 @@
 import cv2
 import time
 import numpy as np
-from utils import calculateALL, Queue
+from utils import calculateALL, status
 
 if __name__ == '__main__':
     time1 = 0.1
     time2 = 0.1
-
-    # 创建队列
-    queue = Queue()
 
     # 获取摄像头对象
     cap1 = cv2.VideoCapture('in.mpg')
@@ -33,15 +30,16 @@ if __name__ == '__main__':
     while True:
         ret1, frame1 = cap1.read()
         ret2, frame2 = cap2.read()
-        cv2.imwrite('1.jpg', frame1)
-        cv2.imwrite('2.jpg', frame2)
+
+        frame1 = cv2.resize(frame1, (768, 432), interpolation=cv2.INTER_CUBIC)
+        frame2 = cv2.resize(frame2, (768, 432), interpolation=cv2.INTER_CUBIC)
 
         time1 = time.time()
         frame = np.vstack((frame1, frame2))
         MSE, SSIM = calculateALL(frame1, frame2)
         seconds = time1 - time2
-        print('MSE:', MSE)
-        print('SSIM', SSIM)
+        result = status(MSE, SSIM)
+        print(result)
         time2 = time1
         cv2.imshow(win_name, frame)  # 显示摄像头当前帧内容
         # Calculate frames per second
