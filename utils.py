@@ -3,7 +3,7 @@
 # @Author  : liuqingtong
 # @FileName: utils.py
 # @Software: PyCharm
-# @GitHub    ：https://github.com/Tsingtong
+# @GitHub  : https://github.com/Tsingtong
 from skimage.measure import compare_mse as mse
 from skimage.measure import compare_ssim as ssim
 from skimage.measure import compare_psnr as psnr
