@@ -17,8 +17,8 @@ if __name__ == '__main__':
     time2 = 0.1
 
     # 获取摄像头对象
-    cap1 = cv2.VideoCapture('source.mpg')
-    cap2 = cv2.VideoCapture('failure.mpg')
+    cap1 = cv2.VideoCapture('cctv_1080p.mp4')
+    cap2 = cv2.VideoCapture('cctv_720p.mp4')
 
     # 设置窗口对象
     win_name = "output"
@@ -43,10 +43,7 @@ if __name__ == '__main__':
         ret1, frame1 = cap1.read()
         ret2, frame2 = cap2.read()
 
-        # frame1 = cv2.resize(frame1, (768, 432), interpolation=cv2.INTER_CUBIC)
-        # frame2 = cv2.resize(frame2, (768, 432), interpolation=cv2.INTER_CUBIC)
-        frame1 = cv2.resize(frame1, (320, 180), interpolation=cv2.INTER_CUBIC)
-        frame2 = cv2.resize(frame2, (320, 180), interpolation=cv2.INTER_CUBIC)
+        frame1 = cv2.resize(frame1, (1280, 720), interpolation=cv2.INTER_CUBIC)
 
         time1 = time.time()
         frame = np.vstack((frame1, frame2))
